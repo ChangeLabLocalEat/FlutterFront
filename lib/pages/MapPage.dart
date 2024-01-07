@@ -123,7 +123,7 @@ class _MapPageState extends State<MapPage> {
           ),],
       ),
       body: FlutterMap(
-        options: MapOptions(),
+        options: MapOptions(center: LatLng(45.759681, 4.855772), zoom: 13.0),
         children: [
           TileLayer(
             urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
