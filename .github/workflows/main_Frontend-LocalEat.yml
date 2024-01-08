@@ -30,7 +30,7 @@ jobs:
       uses: docker/build-push-action@v3
       with:
         push: true
-        tags: index.docker.io/${{ secrets.AzureAppService_ContainerUsername_f771e982625748418bfe408e74f44abd }}/guiletjulien/localeatfront:${{ github.sha }}
+        tags: index.docker.io/guiletjulien/localeatfront:${{ github.sha }}
         file: ./Dockerfile
 
   deploy:
@@ -48,4 +48,4 @@ jobs:
         app-name: 'Frontend-LocalEat'
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_e80756dd5e3d4cda890bd5391174bb53 }}
-        images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_f771e982625748418bfe408e74f44abd }}/guiletjulien/localeatfront:${{ github.sha }}'
+        images: 'index.docker.io/guiletjulien/localeatfront:${{ github.sha }}'
