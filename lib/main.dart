@@ -12,7 +12,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Loxi',
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFf7eeb2),
         appBarTheme: AppBarTheme(
@@ -21,7 +21,8 @@ class MyApp extends StatelessWidget {
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
-            primary: Color(0xFF663627),
+            foregroundColor: Colors.white,
+            backgroundColor: Color(0xFF663627),
           ),
         ),
         inputDecorationTheme: InputDecorationTheme(
