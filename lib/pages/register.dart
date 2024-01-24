@@ -12,6 +12,42 @@ class _RegisterPageState extends State<RegisterPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
+  bool _isPasswordVisible = false;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
+
+  void _register() {
+    String lastName = _lastNameController.text;
+    String firstName = _firstNameController.text;
+    String email = _emailController.text;
+    String password = _passwordController.text;
+
+    if (lastName.isEmpty || firstName.isEmpty || email.isEmpty || password.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Veuillez remplir tous les champs demandés."),
+          duration: Duration(seconds: 4),
+        ),
+      );
+      return;
+    }
+
+    bool isEmailValid = RegExp(r'^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$').hasMatch(email);
+    if (!isEmailValid) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text("Veuillez renseigner une adresse mail valide."),
+          duration: Duration(seconds: 4),
+        ),
+      );
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,7 +65,7 @@ class _RegisterPageState extends State<RegisterPage> {
                 style: TextStyle(
                   color: Color(0xFF22372e),
                   fontSize: 25,
-                  fontWeight: FontWeight.bold
+                  fontWeight: FontWeight.bold,
                 ),
               ),
             ],
@@ -52,9 +88,8 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: "Nom",
                             labelStyle: TextStyle(color: Color(0xFF22372e)),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 16.0),
-                          // Couleur du texte
                         ),
                         SizedBox(height: 8.0),
                         TextField(
@@ -63,7 +98,7 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: "Prénom",
                             labelStyle: TextStyle(color: Color(0xFF22372e)),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 16.0),
                         ),
                         SizedBox(height: 8.0),
@@ -73,27 +108,35 @@ class _RegisterPageState extends State<RegisterPage> {
                             labelText: "Email",
                             labelStyle: TextStyle(color: Color(0xFF22372e)),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 16.0),
                         ),
                         SizedBox(height: 8.0),
                         TextField(
                           controller: _passwordController,
-                          obscureText: true,
+                          obscureText: !_isPasswordVisible,
                           decoration: InputDecoration(
                             labelText: "Mot de passe",
                             labelStyle: TextStyle(color: Color(0xFF22372e)),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                _isPasswordVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Color(0xFF22372e),
+                              ),
+                              onPressed: _togglePasswordVisibility,
+                            ),
+                            contentPadding: EdgeInsets.fromLTRB(12, 12.0, 0.0, 12.0),
                           ),
-                          textAlign: TextAlign.center,
+                          textAlign: TextAlign.justify,
                           style: TextStyle(fontSize: 16.0),
                         ),
                         SizedBox(height: 1.0),
                         Padding(
                           padding: const EdgeInsets.only(top: 5.0),
                           child: ElevatedButton(
-                            onPressed: () {
-                              String lastName = _lastNameController.text;
-                            },
+                            onPressed: _register,
                             child: Text("S'inscrire"),
                           ),
                         ),
@@ -106,9 +149,11 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: TextButton(
                             onPressed: () {
                               Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => LoginPage(),
+                                ),
+                              );
                             },
                             child: Text(
                               "Connectez-vous",

@@ -10,7 +10,14 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  bool _isObscured = true;
+
+  bool _isPasswordVisible = false;
+
+  void _togglePasswordVisibility() {
+    setState(() {
+      _isPasswordVisible = !_isPasswordVisible;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,133 +28,128 @@ class _LoginPageState extends State<LoginPage> {
         foregroundColor: Color(0xFF22372e),
       ),
       body: Column(
-          children: [
+        children: [
           Image.asset('assets/images/Logo.png', width: 100, height: 100),
-      Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
-          Text(
-            "Connexion",
-            style: TextStyle(
-              color: Color(0xFF22372e),
-              fontSize: 25,
-              fontWeight: FontWeight.bold
-            ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: const [
+              Text(
+                "Connexion",
+                style: TextStyle(
+                    color: Color(0xFF22372e),
+                    fontSize: 25,
+                    fontWeight: FontWeight.bold
+                ),
+              ),
+            ],
           ),
-        ],
-      ),
-      Center(
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Card(
-            elevation: 5,
-            child: Container(
-              constraints: BoxConstraints(maxWidth: 200),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    TextField(
-                      controller: _emailController,
-                      decoration: const InputDecoration(
-                        labelText: "Email",
-                        labelStyle: TextStyle(color: Color(0xFF22372e)),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF22372e)),
-                      ),
-                        enabledBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: Color(0xFF22372e)),
-                        ),
-                      ),
-                      textAlign: TextAlign.center,
-                      style: TextStyle(fontSize: 16.0),
-                    ),
-                    SizedBox(height: 16.0),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Expanded(
-                          child: TextField(
-                            controller: _passwordController,
-                            obscureText: _isObscured,
-                            decoration: InputDecoration(
-                              labelText: "Mot de passe",
-                              labelStyle: TextStyle(color: Color(0xFF22372e)),
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Card(
+                elevation: 5,
+                child: Container(
+                  constraints: BoxConstraints(maxWidth: 200),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        TextField(
+                          controller: _emailController,
+                          decoration: const InputDecoration(
+                            labelText: "Email",
+                            labelStyle: TextStyle(color: Color(0xFF22372e)),
+                            focusedBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF22372e)),
                             ),
-                            textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 16.0),
-                            cursorColor: Color(0xFF22372e),
+                            enabledBorder: OutlineInputBorder(
+                              borderSide: BorderSide(color: Color(0xFF22372e)),
+                            ),
+                          ),
+                          textAlign: TextAlign.justify,
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                        SizedBox(height: 16.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Expanded(
+                              child: TextField(
+                                controller: _passwordController,
+                                obscureText: !_isPasswordVisible,
+                                decoration: InputDecoration(
+                                  labelText: "Mot de passe",
+                                  labelStyle: TextStyle(color: Color(0xFF22372e)),
+                                  suffixIcon: IconButton(
+                                    icon: Icon(
+                                      _isPasswordVisible
+                                          ? Icons.visibility
+                                          : Icons.visibility_off,
+                                      color: Color(0xFF22372e),
+                                    ),
+                                    onPressed: _togglePasswordVisibility,
+                                  ),
+                                ),
+                                textAlign: TextAlign.justify,
+                                style: TextStyle(fontSize: 16.0),
+                                cursorColor: Color(0xFF22372e),
+                              ),
+                            ),
+                          ],
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 16.0),
+                          child: ElevatedButton(
+                            onPressed: () {
+                              String email = _emailController.text;
+                              String password = _passwordController.text;
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => MapPage(),
+                                ),
+                              );
+                            },
+                            child: Text("Se connecter", style: TextStyle(color: Colors.white)),
                           ),
                         ),
-                        IconButton(
-                          icon: Icon(
-                            _isObscured
-                                ? Icons.visibility
-                                : Icons.visibility_off,
-                            color: Color(0xFF22372e),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 8.0),
+                          child: Text(
+                            "Pas encore inscrit ?",
+                            style: TextStyle(
+                              color: Color(0xFF22372e),
+                            ),
                           ),
-                          onPressed: () {
-                            setState(() {
-                              _isObscured = !_isObscured;
-                            });
-                          },
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.only(top: 2.0),
+                          child: TextButton(
+                            onPressed: () {
+                              Navigator.pushReplacement(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => RegisterPage(),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              "Inscrivez-vous",
+                              style: TextStyle(
+                                decoration: TextDecoration.underline,
+                                color: Color(0xFF22372e),
+                              ),
+                            ),
+                          ),
                         ),
                       ],
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 16.0),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          String email = _emailController.text;
-                          String password = _passwordController.text;
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MapPage(),
-                            ),
-                          );
-                        },
-                        child: Text("Se connecter",style: TextStyle(color: Colors.white)),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 8.0),
-                      child: Text(
-                        "Pas encore inscrit ?",
-                        style: TextStyle(
-                          color: Color(0xFF22372e),
-
-                        ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2.0),
-                      child: TextButton(
-                        onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterPage(),
-                            ),
-                          );
-                        },
-                        child: Text(
-                          "Inscrivez-vous",
-                          style: TextStyle(
-                            decoration: TextDecoration.underline,
-                            color: Color(0xFF22372e),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                  ),
                 ),
               ),
             ),
           ),
-        ),
-        ),
         ],
       ),
     );
