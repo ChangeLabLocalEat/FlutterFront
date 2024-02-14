@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:local_eat/pages/MapPage.dart';
+import 'package:local_eat/pages/login.dart';
 import 'package:local_eat/pages/menu.dart';
+import 'package:local_eat/pages/register.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,7 +14,12 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return MaterialApp(routes: {
+      '/': (context) => Menu(),
+      '/login': (context) => LoginPage(),
+      '/register': (context) => RegisterPage(),
+      '/map': (context) => const MapPage(),
+    },
       title: 'Loxi',
       theme: ThemeData(
         scaffoldBackgroundColor: Color(0xFFf7eeb2),
@@ -40,7 +48,6 @@ class MyApp extends StatelessWidget {
               borderSide: BorderSide(color: Color(0xFF22372e))),
         ),
       ),
-      home: Menu(),
     );
   }
 }

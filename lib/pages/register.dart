@@ -105,10 +105,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           padding: const EdgeInsets.only(top: 2.0),
                           child: TextButton(
                             onPressed: () {
-                              Navigator.pushReplacement(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => LoginPage()));
+                              Navigator.pushReplacementNamed(context, "/login");
                             },
                             child: Text(
                               "Connectez-vous",

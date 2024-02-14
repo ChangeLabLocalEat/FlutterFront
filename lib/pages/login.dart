@@ -101,12 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                         onPressed: () {
                           String email = _emailController.text;
                           String password = _passwordController.text;
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => MapPage(),
-                            ),
-                          );
+                          Navigator.pushReplacementNamed(context, '/map');
                         },
                         child: Text("Se connecter",style: TextStyle(color: Colors.white)),
                       ),
@@ -125,12 +120,7 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.only(top: 2.0),
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushReplacement(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => RegisterPage(),
-                            ),
-                          );
+                          Navigator.pushReplacementNamed(context, '/register');
                         },
                         child: Text(
                           "Inscrivez-vous",

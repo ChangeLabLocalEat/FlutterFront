@@ -33,6 +33,8 @@ dependencies:
 
   flutter_map: ^5.0.0
   flutter_map_location_marker: ^7.0.5
+  geolocator: ^10.1.1
+  http: ^1.1.0
   latlong2: any
   vector_map_tiles: ^6.0.1
 

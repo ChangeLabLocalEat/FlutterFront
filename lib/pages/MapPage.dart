@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:local_eat/models/point.dart';
 import 'package:local_eat/repositories/MapRepository.dart';
@@ -15,16 +16,31 @@ class MapPage extends StatefulWidget {
 }
 
 class _MapPageState extends State<MapPage> {
-  List<Point> points = [
-  ];
+  List<Point> points = [];
   MapRepository mapRepository = MapRepository("http://localhost:8000/locations/");
 
+  void reloadPoints() {
+    Geolocator.getCurrentPosition().then((value) {
+      mapRepository.getPointNearby(LatLng(value.latitude, value.longitude), 1000, "a").then((value) => setState(() {
+            points = value;
+          }));
+    });
+  }
 
   @override
   void initState() {
-    mapRepository.getPointNearby(const LatLng(45.759681, 4.855772), 1000,"a").then((value) => setState(() {
-      points = value;
-    }));
+    Geolocator.checkPermission().then((value) {
+      if (value == LocationPermission.denied) {
+        Geolocator.requestPermission().then((value) {
+          if (value == LocationPermission.denied) {
+            return;
+          }
+          reloadPoints();
+        });
+      } else {
+        reloadPoints();
+      }
+    });
     super.initState();
   }
 
@@ -39,13 +55,9 @@ class _MapPageState extends State<MapPage> {
         title: const SearchBar(),
         actions: [
           IconButton(
-            icon: const Icon(Icons.upload),
-            onPressed:  () {
-              print("test");
-              mapRepository.getPointNearby(const LatLng(45.759681, 4.855772), 1000,"a").then((value) => setState(() {
-                points = value;
-              }));
-
+            icon: const Icon(Icons.refresh),
+            onPressed: () {
+              reloadPoints();
             },
           ),],
       ),
@@ -81,12 +93,42 @@ class _MapPageState extends State<MapPage> {
                   height: 40.0,
                   point: LatLng(point.latitude, point.longitude),
                   builder: (BuildContext context) {
-                    return const Align(
+                    return Align(
                       alignment: AlignmentDirectional.topCenter,
-                      child: Icon(
-                        Icons.location_on,
+                      child: IconButton(
                         color: Colors.red,
-                        size: 20,
+                        onPressed: () {
+                          setState(() {
+                            showBottomSheet(constraints: BoxConstraints(maxHeight: 200),
+                                context: context,
+                                builder: (context) {
+                                  return Container(
+                                    height: 200,
+                                    width: 400,
+                                    color: Colors.white,
+                                    child: Column(
+                                      children: [
+                                        Text(point.title),
+                                        Text(point.pointtype),
+                                        Row(mainAxisSize: MainAxisSize.min,
+                                          children: [
+                                            Text(point.latitude.toString()),
+                                            Text(point.longitude.toString()),
+                                          ],
+                                        ),
+                                        Row(mainAxisSize: MainAxisSize.min,
+                                          children: point.tags.map((e) => Chip(label: Text(e))).toList(),
+                                        ),
+                                      ],
+                                    ),
+                                  );
+                                });
+                          });
+                        },
+                        icon: const Icon(
+                          Icons.location_on,
+                          size: 20,
+                        ),
                       ),
                     );
                   },

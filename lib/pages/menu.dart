@@ -41,20 +41,14 @@ class Menu extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
+                      Navigator.pushNamed(context, '/login');
                     },
                     child: Text("Connexion"),
                   ),
                   SizedBox(height: 20),
                   ElevatedButton(
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => RegisterPage()),
-                      );
+                      Navigator.pushNamed(context, '/register');
                     },
                     child: Text("Inscription"),
                   ),
